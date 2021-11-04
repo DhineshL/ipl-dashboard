@@ -2,6 +2,7 @@ import { React, useEffect, useState } from 'react'
 import { MatchDetailCard } from '../components/MatchDetailCard'
 import { MatchSmallCard } from '../components/MatchSmallCard'
 import { useParams } from 'react-router'
+import { Link } from 'react-router-dom'
 import { PieChart } from 'react-minimal-pie-chart'
 
 import './TeamPage.scss'
@@ -10,13 +11,13 @@ export const TeamPage = () => {
   const [team, setTeam] = useState({ matches: [] })
   const { teamName } = useParams()
   useEffect(() => {
-    const fetchMatches = async () => {
+    const fetchTeam = async () => {
       const response = await fetch(`http://localhost:8080/team/${teamName}`)
       const data = await response.json()
       console.log(data)
       setTeam(data)
     }
-    fetchMatches()
+    fetchTeam()
   }, [teamName])
 
   if (!team || !team.teamName) {
@@ -49,7 +50,11 @@ export const TeamPage = () => {
         <MatchSmallCard teamName={team.teamName} match={match} />
       ))}
       <div className='more-link'>
-        <a href='#'>More > </a>
+        <Link
+          to={`/teams/${teamName}/matches/${process.env.REACT_APP_DATA_END_YEAR}`}
+        >
+          More >
+        </Link>
       </div>
     </div>
   )
